@@ -1,0 +1,73 @@
+#include <iostream>
+using namespace std;
+typedef struct Node {
+	int value;
+	Node* leftChild;
+	Node* rightChild;
+}Node;
+
+void insert(Node* root, Node* a) {
+	if (a->value <= root->value) { //루트값보다 작거나 같은경우
+		if (root->leftChild == nullptr)
+			root->leftChild = a;
+		else
+			insert(root->leftChild, a);
+	}
+	else {
+		if (root->rightChild == nullptr)
+			root->rightChild = a;
+		else
+			insert(root->rightChild, a);
+	}
+	return;
+}
+bool search(Node* root, int x) {
+	if (root == nullptr)
+		return false;
+	else {
+		if (root->value > x) {
+			if (search(root->leftChild, x))
+				return true;
+			else
+				return false;
+		}
+		else if (root->value < x) {
+			if (search(root->rightChild, x))
+				return true;
+			else
+				return false;
+		}
+		else
+			return true;
+	}
+	return false;
+}
+
+int main() {
+	ios::sync_with_stdio(false);
+	cin.tie(NULL);
+	int n, m, k;
+	cin >> n;
+	cin >> k;
+	Node* NodeSet = new Node[n];
+	NodeSet[0].leftChild = nullptr;
+	NodeSet[0].rightChild = nullptr;
+	NodeSet[0].value = k;
+	for (int i = 1; i < n; i++) {
+		cin >> k;
+		//Node a; //a가 이전에 선언한 값을 덮어쓰지 않음
+		NodeSet[i].leftChild = nullptr;
+		NodeSet[i].rightChild = nullptr;
+		NodeSet[i].value = k;
+		insert(NodeSet, &NodeSet[i]);
+	}
+	cin >> m;
+	for (int i = 0; i < m; i++) {
+		cin >> k;
+		if (search(NodeSet, k))
+			cout << 1 << endl;
+		else
+			cout << 0 << endl;
+	}
+	return 0;
+}
