@@ -1,0 +1,55 @@
+#include <iostream>
+using namespace std;
+int wire[10001];
+int main() {
+	int k, n;
+    scanf("%d %d", &k, &n);
+	for (int i = 0; i < k; i++)
+		scanf("%d", &wire[i]);
+	int ans = 1;
+	int change = 1;
+	int sum = 0;
+	int i = 0;
+	while (true) { //최고점 찾기
+		while (sum < n && i < k) { //ans의 크기로 잘라봄
+			sum += wire[i++] / ans;
+		}
+		if(sum >= n){ //n개 만드는데 성공
+			ans += change;
+			change *= 2;
+		}
+		else { //n개 만드는데 실패 ans는 고점
+			change /= 4;
+			ans -= change;
+			break;
+		}
+		sum = 0;
+		i = 0;
+	}
+	sum = 0;
+	i = 0;
+	while (true) { //정답 찾기
+		while (sum < n && i < k) { //ans의 크기로 잘라봄
+			sum += wire[i++] / ans;
+		}
+		if (sum >= n) { //n개 만드는데 성공
+			change /= 2;
+			ans += change;
+			if (change == 0) {
+				printf("%d", ans);
+				break;
+			}
+		}
+		else { //n개 만드는데 실패
+			change /= 2;
+			ans -= change;
+			if (change == 0) {
+				printf("%d", ans - 1);
+				break;
+			}
+		}
+		sum = 0;
+		i = 0;
+	}
+	return 0;
+}
