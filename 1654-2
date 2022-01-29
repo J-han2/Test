@@ -1,0 +1,54 @@
+#include <iostream>
+using namespace std;
+int wire[10001];
+int main() {
+	int k, n;
+    scanf("%d %d", &k, &n);
+	for (int i = 0; i < k; i++)
+		scanf("%d", &wire[i]);
+	int a = 1;
+	int b = 2;
+	int sum = 0;
+	int i = 0;
+	while (true) {
+		while (sum < n && i < k) { //b의 크기로 잘라봄
+			sum += wire[i++] / b;
+		}
+		if (sum >= n) { //n개 만드는데 성공
+			a *= 2;
+			b *= 2;
+		}
+		else { //n개 만드는데 실패
+			sum = 0;
+			i = 0;
+			break;
+		}
+		sum = 0;
+		i = 0;
+	}
+	while (true) {
+		while (sum < n && i < k) {
+			sum += wire[i++] / ((b + a) / 2);
+		}
+		if (sum >= n) { //성공
+			a = (b + a) / 2;
+		}
+		else { //실패
+			b = (b + a) / 2;
+		}
+		sum = 0;
+		i = 0;
+		if ((b - a) == 1)
+			break;
+	}
+	while (sum < n && i < k) {
+		sum += wire[i++] / b;
+	}
+	if (sum >= n) { //성공
+		printf("%d", b);
+	}
+	else { //실패
+		printf("%d", a);
+	}
+	return 0;
+}
