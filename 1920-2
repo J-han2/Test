@@ -1,0 +1,63 @@
+#include <iostream>
+using namespace std;
+
+void quick_sort(int* arr, int n) {
+	if (n <= 1)
+		return;
+	int p = 0;
+	int temp;
+	int i = 1, j = n-1;
+	while (i <= j) {
+		while (arr[i] < arr[p] && i < n)
+			i++;
+		while (arr[j] > arr[0] && j > 0)
+			j--;
+		if (i > j) {
+			temp = arr[p];
+			arr[p] = arr[j];
+			arr[j] = temp;
+		}
+		else {
+			temp = arr[i];
+			arr[i] = arr[j];
+			arr[j] = temp;
+		}
+	}
+	quick_sort(arr, j);
+	quick_sort(arr + j + 1, n - j - 1);
+}
+
+bool search(int* arr, int n, int x) {
+	if (n == 0)
+		return false;
+	int i = n / 2;
+	if (arr[i] == x)
+		return true;
+	else if (arr[i] > x)
+		return search(arr, i, x);
+	else
+		return search(arr + i + 1, n - i - 1, x);
+}
+
+int main() {
+	int n, m, k;
+	cin >> n;
+	int* Arr = new int[n];
+	for (int i = 0; i < n; i++) {
+		cin >> k;
+		Arr[i] = k;
+	}
+	quick_sort(Arr,n);
+	for (int i = 0; i < n; i++) {
+		printf("%d ", Arr[i]);
+	}
+	printf("\n");
+	cin >> m;
+	for (int i = 0; i < m; i++) {
+		cin >> k;
+		if (search(Arr, n, k))
+			printf("1\n");
+		else
+			printf("0\n");
+	}
+}
